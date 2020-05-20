@@ -31,7 +31,6 @@ class Start extends Component {
           <input
             type="text"
             placeholder="Nombre de la sala"
-            value={this.state.sala}
             onChange={this.handleChangeSala}
           />
         </label>
@@ -41,7 +40,6 @@ class Start extends Component {
           <input
             type="text"
             placeholder="Nombre del jugador"
-            value={this.state.player}
             onChange={this.handleChangePlayer}
           />
         </label>
