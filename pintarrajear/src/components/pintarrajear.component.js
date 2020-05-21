@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import p5 from "p5";
 
 class Pintarrajear extends Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
       message: "",
       chat: [],
@@ -32,6 +34,28 @@ class Pintarrajear extends Component {
   }
   //<>
 
+  sketch = (p) => {
+    let x = 60;
+    let y = 60;
+
+    p.setup = () => {
+      p.createCanvas(500, 400);
+      p.background(255);
+    };
+
+    p.draw = () => {
+      if (p.mouseIsPressed === true) {
+        p.stroke(0);
+        p.fill(0);
+        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+      }
+    };
+  };
+
+  componentDidMount() {
+    this.myP5 = new p5(this.sketch, this.myRef.current);
+  }
+
   renderPositions = (player) => {
     return (
       <h5>
@@ -58,44 +82,60 @@ class Pintarrajear extends Component {
   render() {
     return (
       <div
-        className="row container-fluid"
-        style={{ background: "green", padding: 10 }}
+        className="container-fluid"
+        style={{ background: "#433873", padding: 50 }}
       >
         <div
-          className="col-2"
-          style={{ background: "blue", textAlign: "center" }}
+          class="row"
+          style={{ justifyContent: "center", border: "3px solid" }}
         >
-          <h3> Posiciones </h3>
-          {this.state.players
-            .sort((a, b) => (a.points < b.points ? 1 : -1))
-            .map(this.renderPositions)}
-        </div>
-        <div className="col-6" style={{ background: "red" }}>
-          Aca iria el CANVAS
-        </div>
-        <div className="col-4">
-          <div className="card">
-            <div className="card-header">
-              <h4 style={{ textAlign: "center" }}> Chat </h4>
-            </div>
-            <div id="chat" className="card-body" style={{ height: 250 }}>
-              {this.state.chat.map(this.renderChatMsg)}
-            </div>
-            <form
-              id="chat-form"
-              className="card-footer"
-              onSubmit={this.handleSubmit}
-            >
-              <div className="input-group">
-                <input
-                  type="text"
-                  id="message"
-                  value={this.state.message}
-                  onChange={this.handleChangeInput}
-                />
-                <input type="submit" className="btn btn-warning" />
+          <div
+            className="col-12 col-lg-2 d-block"
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <h3> Posiciones </h3>
+            {this.state.players
+              .sort((a, b) => (a.points < b.points ? 1 : -1))
+              .map(this.renderPositions)}
+          </div>
+          <div
+            className="col-12 col-lg-6 d-flex"
+            style={{
+              justifyContent: "center",
+              border: "5px solid",
+            }}
+          >
+            <div ref={this.myRef}></div>
+          </div>
+          <div
+            className="col-12 col-lg-4 d-flex"
+            style={{ justifyContent: "center" }}
+          >
+            <div className="card">
+              <div className="card-header">
+                <h4 style={{ textAlign: "center" }}> Chat </h4>
               </div>
-            </form>
+              <div id="chat" className="card-body" style={{ height: 250 }}>
+                {this.state.chat.map(this.renderChatMsg)}
+              </div>
+              <form
+                id="chat-form"
+                className="card-footer"
+                onSubmit={this.handleSubmit}
+              >
+                <div className="input-group">
+                  <input
+                    type="text"
+                    id="message"
+                    value={this.state.message}
+                    onChange={this.handleChangeInput}
+                  />
+                  <input type="submit" className="btn btn-warning" />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

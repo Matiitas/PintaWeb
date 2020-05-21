@@ -7,7 +7,7 @@ import PintarrajearComponent from "./components/pintarrajear.component";
 function App() {
   return (
     <Router>
-      <div className="container">
+      <div>
         <Route path="/" exact component={StartComponent} />
         <Route path="/pintarrajear" exact component={PintarrajearComponent} />
       </div>
