@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import p5 from "p5";
+import io from "socket.io-client";
+
+let socket;
 
 class Pintarrajear extends Component {
   constructor(props) {
@@ -35,9 +38,6 @@ class Pintarrajear extends Component {
   //<>
 
   sketch = (p) => {
-    let x = 60;
-    let y = 60;
-
     p.setup = () => {
       p.createCanvas(500, 400);
       p.background(255);
@@ -54,7 +54,15 @@ class Pintarrajear extends Component {
 
   componentDidMount() {
     this.myP5 = new p5(this.sketch, this.myRef.current);
+    socket = io.connect("localhost:5000");
+    socket.on("sendMsg", this.addNewMsg);
   }
+
+  addNewMsg = (data) => {
+    let arr = this.state.chat.slice();
+    arr.push(data);
+    this.setState({ chat: arr });
+  };
 
   renderPositions = (player) => {
     return (
@@ -74,6 +82,7 @@ class Pintarrajear extends Component {
     let arr = this.state.chat.slice();
     arr.push(this.state.message);
     this.setState({ chat: arr, message: "" });
+    socket.emit("newMsg", this.state.message);
   };
   handleChangeInput = (event) => {
     this.setState({ message: event.target.value });
