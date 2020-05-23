@@ -1,17 +1,22 @@
 import React, { Component } from "react";
+import SocketService from "../services/SocketService";
 
-//<>
 class Start extends Component {
-  state = {
-    sala: "",
-    player: "",
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      sala: "",
+      player: "",
+    };
+  }
 
   handleSubmit = (event) => {
-    //aca se enviaria al socket??
-    //hago consolelog para probar que funciona
-    console.log("Nombre de sala:", this.state.sala);
-    console.log("Nombre de jugador:", this.state.player);
+    const { sala, player } = this.state;
+    SocketService.emit(
+      "create-room",
+      { username: player, room: sala },
+      (response) => this.props.history.push("/room/" + response.roomId)
+    );
     event.preventDefault();
   };
 

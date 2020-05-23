@@ -9,7 +9,7 @@ function App() {
     <Router>
       <div>
         <Route path="/" exact component={StartComponent} />
-        <Route path="/pintarrajear" exact component={PintarrajearComponent} />
+        <Route path="/room/:roomId" exact component={PintarrajearComponent} />
       </div>
     </Router>
   );

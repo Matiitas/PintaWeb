@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import p5 from "p5";
-import io from "socket.io-client";
-
-let socket;
+import SocketService from "../services/SocketService";
 
 class Pintarrajear extends Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
+    let { roomId } = this.props.match.params;
+    console.log(roomId);
+    SocketService.emit("hit", { casa: "asd" });
+
     this.state = {
       message: "",
       chat: [],
@@ -35,7 +37,6 @@ class Pintarrajear extends Component {
       ],
     };
   }
-  //<>
 
   sketch = (p) => {
     p.setup = () => {
@@ -54,8 +55,7 @@ class Pintarrajear extends Component {
 
   componentDidMount() {
     this.myP5 = new p5(this.sketch, this.myRef.current);
-    socket = io.connect("localhost:5000");
-    socket.on("sendMsg", this.addNewMsg);
+    SocketService.on("sendMsg", this.addNewMsg);
   }
 
   addNewMsg = (data) => {
@@ -82,7 +82,7 @@ class Pintarrajear extends Component {
     let arr = this.state.chat.slice();
     arr.push(this.state.message);
     this.setState({ chat: arr, message: "" });
-    socket.emit("newMsg", this.state.message);
+    SocketService.emit("newMsg", this.state.message);
   };
   handleChangeInput = (event) => {
     this.setState({ message: event.target.value });
