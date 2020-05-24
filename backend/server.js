@@ -51,9 +51,10 @@ io.on("connection", (socket) => {
     const roomId = uuidv4();
 
     socket.username = data.username;
+    socket.owner = true;
     socket.roomId = data.roomId;
     //Muy probablemente necesitemos persistir info de la sala, como el nombre (por ahora lo guardamos en la sesion)
-    socket.room = data.room;
+    socket.to(roomId).name = data.room;
 
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
@@ -62,8 +63,25 @@ io.on("connection", (socket) => {
     response({ roomId: roomId });
   });
 
-  socket.on("hit", (data, response) => {
-    console.log("hit from: ", socket.id);
+  socket.on("join-room", (data, response) => {
+    socket.join(data.roomId);
+
+    console.log(
+      "El usuario:",
+      socket.username,
+      "quiere unirse a la room:",
+      data.roomId
+    );
+
+    response({
+      room: socket.to(data.roomId).name,
+      owner: socket.owner,
+      username: socket.username,
+    });
+  });
+
+  socket.on("addUsername", (data) => {
+    socket.username = data.name;
   });
 
   socket.on("disconnect", () => {
