@@ -9,7 +9,6 @@ class Pintarrajear extends Component {
     this.state = {
       loading: true,
       isOwner: false,
-      isRegistered: false, //es necesario?
       showForm: false,
       name: "", //nombre del usuario para manejar el input del form
       //lo puse para manejar el setState y enviar el input al back
@@ -18,6 +17,8 @@ class Pintarrajear extends Component {
       chat: [],
       players: [],
     };
+
+    this.createBlackBoard = this.createBlackBoard.bind(this);
   }
 
   sketch = (p) => {
@@ -35,6 +36,10 @@ class Pintarrajear extends Component {
     };
   };
 
+  createBlackBoard(element) {
+    new p5(this.sketch, element);
+  }
+
   componentDidMount() {
     let { roomId } = this.props.match.params;
     SocketService.emit("join-room", { roomId: roomId }, (response) => {
@@ -45,6 +50,7 @@ class Pintarrajear extends Component {
       } else {
         this.setState({ showForm: true });
       }
+      this.setState({ loading: false });
       console.log("Es dueño?", this.state.isOwner);
     });
     SocketService.on("sendMsg", this.addNewMsg);
@@ -123,9 +129,7 @@ class Pintarrajear extends Component {
             border: "5px solid",
           }}
         >
-          <div
-            ref={(element) => (this.myP5 = new p5(this.sketch, element))}
-          ></div>
+          <div ref={this.createBlackBoard}></div>
         </div>
         <div
           className="col-12 col-lg-4 d-flex"
@@ -181,7 +185,13 @@ class Pintarrajear extends Component {
         className="container-fluid"
         style={{ background: "#433873", padding: 50 }}
       >
-        {this.state.showForm ? this.renderForm() : this.renderGame()}
+        {this.state.loading ? (
+          <div>Cargando...</div>
+        ) : this.state.showForm ? (
+          this.renderForm()
+        ) : (
+          this.renderGame()
+        )}
       </div>
     );
   }
