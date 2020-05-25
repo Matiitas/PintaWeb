@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import StartComponent from "./components/start.component";
-import PintarrajearComponent from "./components/pintarrajear.component";
+import StartComponent from "./components/Start/StartComponent";
+import PintarrajearComponent from "./components/Pintarrajear/PintarrajearComponent";
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import SocketService from "../services/SocketService";
+import SocketService from "../../services/SocketService";
 
-class Start extends Component {
+class StartComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,4 +55,4 @@ class Start extends Component {
   }
 }
 
-export default Start;
+export default StartComponent;

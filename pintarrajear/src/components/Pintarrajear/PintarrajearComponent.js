@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import p5 from "p5";
-import SocketService from "../services/SocketService";
+import SocketService from "../../services/SocketService";
 
-class Pintarrajear extends Component {
+class PintarrajearComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -197,4 +197,4 @@ class Pintarrajear extends Component {
   }
 }
 
-export default Pintarrajear;
+export default PintarrajearComponent;
