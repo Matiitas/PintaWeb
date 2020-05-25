@@ -30,11 +30,38 @@ class Chat extends Component {
     this.setState({ chat: arr });
   }
 
-  renderChatMsg(msg) {
+  renderChatMsg(msg, index) {
+    const containerMsgStyle = {
+      display: "flex",
+      justifyContent: msg.mine ? "end" : undefined,
+    };
     const msgStyle = msg.mine
-      ? { backgroundColor: "#2488ef", textAlign: "end" }
-      : { backgroundColor: "#ffffff", color: "#000000" };
-    return <h6 style={msgStyle}>{msg.text}</h6>;
+      ? {
+          backgroundColor: "#2488ef",
+          textAlign: "end",
+          color: "#ffffff",
+          borderRadius: 5,
+          paddingRight: 10,
+          paddingLeft: 10,
+          paddingTop: 5,
+          paddingBottom: 5,
+        }
+      : {
+          backgroundColor: "#ffffff",
+          color: "#000000",
+          borderRadius: 5,
+          paddingRight: 10,
+          paddingLeft: 10,
+          paddingTop: 5,
+          paddingBottom: 5,
+        };
+    return (
+      <div style={containerMsgStyle}>
+        <h6 key={index} style={msgStyle}>
+          {msg.text}
+        </h6>
+      </div>
+    );
   }
 
   handleSubmitChat(event) {
