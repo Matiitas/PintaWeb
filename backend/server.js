@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
     console.log(
       "El usuario:",
       socket.username,
-      "quiere unirse a la room:",
+      "se unio a la room:",
       data.roomId
     );
 
@@ -80,8 +80,15 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("addUsername", (data) => {
+  socket.on("set-username", (data, response) => {
     socket.username = data.name;
+  });
+
+  socket.on("send-message", (data, response) => {
+    socket.broadcast.to(socket.roomId).emit("new-message", {
+      username: socket.username,
+      message: data,
+    });
   });
 
   socket.on("disconnect", () => {

@@ -43,7 +43,7 @@ class PintarrajearComponent extends Component {
 
   handleSubmitForm = (event) => {
     console.log("Este es el usuario que se va a agregar:", this.state.name);
-    SocketService.emit("addUsername", { name: this.state.name });
+    SocketService.emit("set-username", { name: this.state.name });
     this.setState({ showForm: false });
     this.addPlayer(this.state.name);
     event.preventDefault();
@@ -57,7 +57,7 @@ class PintarrajearComponent extends Component {
       >
         <Ranking players={this.state.players} />
         <BlackBoard />
-        <Chat />
+        <Chat username={this.state.name} />
       </div>
     );
   };

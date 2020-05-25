@@ -15,24 +15,37 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    SocketService.on("sendMsg", this.addNewMsg);
+    SocketService.on("new-message", this.addNewMsg);
   }
 
   addNewMsg(data) {
+    console.log(data);
+
     let arr = this.state.chat.slice();
-    arr.push(data);
+    arr.push({
+      username: data.username,
+      text: data.message,
+      mine: false,
+    });
     this.setState({ chat: arr });
   }
 
   renderChatMsg(msg) {
-    return <h6>{msg}</h6>;
+    const msgStyle = msg.mine
+      ? { backgroundColor: "#2488ef", textAlign: "end" }
+      : { backgroundColor: "#ffffff", color: "#000000" };
+    return <h6 style={msgStyle}>{msg.text}</h6>;
   }
 
   handleSubmitChat(event) {
     let arr = this.state.chat.slice();
-    arr.push(this.state.message);
+    arr.push({
+      username: this.props.username,
+      text: this.state.message,
+      mine: true,
+    });
     this.setState({ chat: arr, message: "" });
-    SocketService.emit("newMsg", this.state.message);
+    SocketService.emit("send-message", this.state.message);
     event.preventDefault();
   }
 
@@ -50,7 +63,11 @@ class Chat extends Component {
           <div className="card-header">
             <h4 style={{ textAlign: "center" }}> Chat </h4>
           </div>
-          <div id="chat" className="card-body" style={{ height: 250 }}>
+          <div
+            id="chat"
+            className="card-body"
+            style={{ height: 250, backgroundColor: "#232323" }}
+          >
             {this.state.chat.map(this.renderChatMsg)}
           </div>
           <form
