@@ -11,17 +11,30 @@ class BlackBoard extends Component {
 
   sketch = (p) => {
     p.setup = () => {
-      p.createCanvas(500, 400);
-      p.background(255);
+      var button = p.createButton("Borrar");
+      button.position(0, 0);
+      button.style("background-color", "brown");
+      button.style("color", "white");
+      resetCanvas();
+      button.mousePressed(resetCanvas);
     };
 
     p.draw = () => {
-      if (p.mouseIsPressed === true) {
-        p.stroke(0);
-        p.fill(0);
-        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+      if (p.mouseIsPressed) {
+        if (p.mouseButton === p.LEFT) {
+          p.stroke(0);
+          p.strokeWeight(2);
+          p.fill(0);
+          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+        }
       }
     };
+
+    function resetCanvas() {
+      p.clear();
+      p.createCanvas(500, 400);
+      p.background(255);
+    }
   };
 
   createBlackBoard(element) {
