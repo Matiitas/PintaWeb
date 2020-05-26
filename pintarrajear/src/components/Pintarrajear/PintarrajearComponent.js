@@ -16,6 +16,8 @@ class PintarrajearComponent extends Component {
       roomName: "",
       players: [],
     };
+
+    this.addPlayer = this.addPlayer.bind(this);
   }
 
   componentDidMount() {
@@ -40,12 +42,19 @@ class PintarrajearComponent extends Component {
     SocketService.on("user-joins", this.addPlayer);
   }
 
-  addPlayer = (data) => {
+  addPlayer(data) {
     console.log("En el add player", data.username);
     let arr = this.state.players.slice();
     arr.push({ username: data.username, points: 0 });
     this.setState({ players: arr });
-  };
+  }
+
+  // addPlayer = (data) => {
+  //   console.log("En el add player", data.username);
+  //   let arr = this.state.players.slice();
+  //   arr.push({ username: data.username, points: 0 });
+  //   this.setState({ players: arr });
+  // };
 
   handleFormInput = (event) => {
     this.setState({ name: event.target.value });

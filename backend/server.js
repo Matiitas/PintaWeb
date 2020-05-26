@@ -9,9 +9,11 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const wordsRouter = require("./routes/words");
 
+const { addUser, findUsers } = require("./usersService");
+
 //para guardar los usuarios con sus respectivas salas
 //{ roomId: [username: string, points: int]  }
-const rooms = new Map();
+//const rooms = new Map();
 
 /** Env configuration */
 //configura para que tengamos variables de ambito y dotenv file
@@ -61,7 +63,9 @@ io.on("connection", (socket) => {
     //Muy probablemente necesitemos persistir info de la sala, como el nombre (por ahora lo guardamos en la sesion)
     //socket.to(roomId).name = data.room;
     //socket.to(roomId).users = [{ username: data.username, points: 0 }];
-    rooms.set(roomId, [{ username: data.username, points: 0 }]);
+    //rooms.set(roomId, [{ username: data.username, points: 0 }]);
+
+    addUser(roomId, data.username);
 
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
@@ -81,7 +85,9 @@ io.on("connection", (socket) => {
       data.roomId
     );
 
-    usersInRoom = rooms.get(data.roomId);
+    //usersInRoom = rooms.get(data.roomId);
+    usersInRoom = findUsers(data.roomId);
+    console.log("Usuarios activos:", usersInRoom);
 
     response({
       owner: socket.owner,
@@ -92,9 +98,12 @@ io.on("connection", (socket) => {
 
   socket.on("set-username", (data, response) => {
     socket.username = data.username;
-    usersInRoom = rooms.get(data.roomId);
-    usersInRoom.push({ username: data.username, points: 0 });
-    users.set(data.roomId, usersInRoom);
+    //usersInRoom = rooms.get(data.roomId);
+    //usersInRoom.push({ username: data.username, points: 0 });
+    //users.set(data.roomId, usersInRoom);
+
+    addUser(data.roomId, data.username);
+
     socket.broadcast.to(socket.roomId).emit("user-joins", {
       username: socket.username,
     });
