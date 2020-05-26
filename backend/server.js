@@ -9,7 +9,12 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const wordsRouter = require("./routes/words");
 
-const { addUser, findUsers } = require("./usersService");
+const {
+  addUser,
+  findUsers,
+  addRoomName,
+  findRoomName,
+} = require("./usersService");
 
 //para guardar los usuarios con sus respectivas salas
 //{ roomId: [username: string, points: int]  }
@@ -57,11 +62,10 @@ io.on("connection", (socket) => {
     const roomId = uuidv4();
 
     socket.username = data.username;
-    socket.roomId = roomId;
     socket.owner = true;
-    socket.roomName = data.room;
 
-    addUser(roomId.toString(), data.username);
+    addUser(socket.id, roomId.toString(), data.username);
+    addRoomName(roomId.toString(), data.room);
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
     );
@@ -78,19 +82,27 @@ io.on("connection", (socket) => {
       data.roomId
     );
     usersInRoom = findUsers(data.roomId.toString());
+    roomName = findRoomName(data.roomId.toString());
     response({
       owner: socket.owner,
       players: usersInRoom,
       username: socket.username,
+      roomName: roomName,
+      userId: socket.id,
     });
   });
 
   socket.on("set-username", (data, response) => {
     socket.username = data.username;
-    addUser(socket.roomId.toString(), data.username);
+    addUser(socket.id, socket.roomId.toString(), data.username);
     console.log("Usuarios activos:", findUsers(socket.roomId.toString()));
     socket.broadcast.to(socket.roomId).emit("user-joins", {
       username: socket.username,
+      userId: socket.id,
+    });
+    socket.emit("user-joins", {
+      username: socket.username,
+      userId: socket.id,
     });
   });
 

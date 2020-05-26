@@ -3,6 +3,7 @@ import SocketService from "../../services/SocketService";
 import Ranking from "./Ranking";
 import BlackBoard from "./BlackBoard";
 import Chat from "./Chat";
+import Header from "./Header";
 
 class PintarrajearComponent extends Component {
   constructor(props) {
@@ -28,7 +29,6 @@ class PintarrajearComponent extends Component {
         this.setState({ isOwner: true });
         this.addPlayer(response);
       } else {
-        console.log("players actuales:", this.state.players);
         console.log("players del response:", response.players);
         this.setState({
           showForm: true,
@@ -36,27 +36,22 @@ class PintarrajearComponent extends Component {
         });
       }
       this.setState({
-        roomName: response.room,
+        roomName: response.roomName,
         loading: false,
       });
+      console.log("El nombre de la sala es:", this.state.roomName);
     });
 
     SocketService.on("user-joins", this.addPlayer);
   }
 
   addPlayer(data) {
-    console.log("En el add player", data.username);
+    console.log("En el add player", data.username, "con key:", data.userId);
     let arr = this.state.players.slice();
-    arr.push({ username: data.username, points: 0 });
+    arr.push({ key: data.userId, username: data.username, points: 0 });
     this.setState({ players: arr });
+    console.log("players actuales:", this.state.players);
   }
-
-  // addPlayer = (data) => {
-  //   console.log("En el add player", data.username);
-  //   let arr = this.state.players.slice();
-  //   arr.push({ username: data.username, points: 0 });
-  //   this.setState({ players: arr });
-  // };
 
   handleFormInput = (event) => {
     this.setState({ name: event.target.value });
@@ -66,19 +61,21 @@ class PintarrajearComponent extends Component {
     console.log("Este es el usuario que se va a agregar:", this.state.name);
     SocketService.emit("set-username", { username: this.state.name });
     this.setState({ showForm: false });
-    this.addPlayer({ username: this.state.name });
     event.preventDefault();
   };
 
   renderGame = () => {
     return (
-      <div
-        className="row"
-        style={{ justifyContent: "center", border: "3px solid" }}
-      >
-        <Ranking players={this.state.players} />
-        <BlackBoard />
-        <Chat username={this.state.name} />
+      <div style={{ textAlign: "center" }}>
+        <Header roomName={this.state.roomName} />
+        <div
+          className="row"
+          style={{ justifyContent: "center", border: "3px solid" }}
+        >
+          <Ranking players={this.state.players} />
+          <BlackBoard />
+          <Chat username={this.state.name} />
+        </div>
       </div>
     );
   };
