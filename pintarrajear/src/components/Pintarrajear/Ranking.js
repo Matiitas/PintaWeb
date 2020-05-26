@@ -26,7 +26,7 @@ class Ranking extends Component {
     return (
       <h5>
         {" "}
-        {player.name} : {player.points}{" "}
+        {player.username} : {player.points}{" "}
       </h5>
     );
   }

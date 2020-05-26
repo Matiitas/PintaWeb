@@ -20,20 +20,30 @@ class PintarrajearComponent extends Component {
 
   componentDidMount() {
     let { roomId } = this.props.match.params;
+
     SocketService.emit("join-room", { roomId: roomId }, (response) => {
       if (response.owner) {
         this.setState({ isOwner: true });
-        this.addPlayer(response.username);
+        this.addPlayer(response);
       } else {
-        this.setState({ showForm: true });
+        this.setState({
+          showForm: true,
+          players: response.players,
+        });
       }
-      this.setState({ roomName: response.room, loading: false });
+      this.setState({
+        roomName: response.room,
+        loading: false,
+      });
     });
+
+    SocketService.on("user-joins", this.addPlayer);
   }
 
-  addPlayer = (name) => {
+  addPlayer = (data) => {
+    console.log("En el add player", data.username);
     let arr = this.state.players.slice();
-    arr.push({ name: name, points: 0 });
+    arr.push({ username: data.username, points: 0 });
     this.setState({ players: arr });
   };
 
@@ -43,9 +53,9 @@ class PintarrajearComponent extends Component {
 
   handleSubmitForm = (event) => {
     console.log("Este es el usuario que se va a agregar:", this.state.name);
-    SocketService.emit("set-username", { name: this.state.name });
+    SocketService.emit("set-username", { username: this.state.name });
     this.setState({ showForm: false });
-    this.addPlayer(this.state.name);
+    this.addPlayer({ username: this.state.name });
     event.preventDefault();
   };
 
