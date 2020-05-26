@@ -28,6 +28,8 @@ class PintarrajearComponent extends Component {
         this.setState({ isOwner: true });
         this.addPlayer(response);
       } else {
+        console.log("players actuales:", this.state.players);
+        console.log("players del response:", response.players);
         this.setState({
           showForm: true,
           players: response.players,

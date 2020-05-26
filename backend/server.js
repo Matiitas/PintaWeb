@@ -60,35 +60,24 @@ io.on("connection", (socket) => {
     socket.roomId = roomId;
     socket.owner = true;
     socket.roomName = data.room;
-    //Muy probablemente necesitemos persistir info de la sala, como el nombre (por ahora lo guardamos en la sesion)
-    //socket.to(roomId).name = data.room;
-    //socket.to(roomId).users = [{ username: data.username, points: 0 }];
-    //rooms.set(roomId, [{ username: data.username, points: 0 }]);
 
-    addUser(roomId, data.username);
-
+    addUser(roomId.toString(), data.username);
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
     );
-
     response({ roomId: roomId });
   });
 
   socket.on("join-room", (data, response) => {
     socket.join(data.roomId);
     socket.roomId = data.roomId;
-
     console.log(
       "El usuario:",
       socket.username,
       "se unio a la room:",
       data.roomId
     );
-
-    //usersInRoom = rooms.get(data.roomId);
-    usersInRoom = findUsers(data.roomId);
-    console.log("Usuarios activos:", usersInRoom);
-
+    usersInRoom = findUsers(data.roomId.toString());
     response({
       owner: socket.owner,
       players: usersInRoom,
@@ -98,12 +87,8 @@ io.on("connection", (socket) => {
 
   socket.on("set-username", (data, response) => {
     socket.username = data.username;
-    //usersInRoom = rooms.get(data.roomId);
-    //usersInRoom.push({ username: data.username, points: 0 });
-    //users.set(data.roomId, usersInRoom);
-
-    addUser(data.roomId, data.username);
-
+    addUser(socket.roomId.toString(), data.username);
+    console.log("Usuarios activos:", findUsers(socket.roomId.toString()));
     socket.broadcast.to(socket.roomId).emit("user-joins", {
       username: socket.username,
     });
