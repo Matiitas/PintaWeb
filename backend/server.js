@@ -96,11 +96,7 @@ io.on("connection", (socket) => {
     socket.username = data.username;
     addUser(socket.id, socket.roomId.toString(), data.username);
     console.log("Usuarios activos:", findUsers(socket.roomId.toString()));
-    socket.broadcast.to(socket.roomId).emit("user-joins", {
-      username: socket.username,
-      userId: socket.id,
-    });
-    socket.emit("user-joins", {
+    io.in(socket.roomId).emit("user-joins", {
       username: socket.username,
       userId: socket.id,
     });
@@ -111,6 +107,21 @@ io.on("connection", (socket) => {
       username: socket.username,
       message: data,
     });
+  });
+
+  //manejo del canvas
+
+  socket.on("drawing", (data, response) => {
+    socket.broadcast.to(socket.roomId).emit("new-drawing", {
+      x: data.x,
+      y: data.y,
+      xx: data.xx,
+      yy: data.yy,
+    });
+  });
+
+  socket.on("clear-canvas", (data, response) => {
+    io.in(socket.roomId).emit("clear");
   });
 
   socket.on("disconnect", () => {

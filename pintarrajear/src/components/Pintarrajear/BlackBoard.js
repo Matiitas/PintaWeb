@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import p5 from "p5";
+import SocketService from "../../services/SocketService";
 
 class BlackBoard extends Component {
   constructor(props) {
@@ -15,25 +16,55 @@ class BlackBoard extends Component {
       button.position(0, 0);
       button.style("background-color", "brown");
       button.style("color", "white");
-      resetCanvas();
       button.mousePressed(resetCanvas);
+      p.createCanvas(500, 400);
+      p.background(255);
     };
 
     p.draw = () => {
-      if (p.mouseIsPressed) {
-        if (p.mouseButton === p.LEFT) {
-          p.stroke(0);
-          p.strokeWeight(2);
-          p.fill(0);
-          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
-        }
+      // if (p.mouseIsPressed) {
+      //   if (p.mouseButton === p.LEFT) {
+      //     p.stroke(0);
+      //     p.strokeWeight(2);
+      //     p.fill(0);
+      //     p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+      //   }
+      // }
+    };
+
+    p.mouseDragged = () => {
+      if (p.mouseButton === p.LEFT) {
+        SocketService.emit("drawing", {
+          x: p.mouseX,
+          y: p.mouseY,
+          xx: p.pmouseX,
+          yy: p.pmouseY,
+        });
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.fill(0);
+        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
       }
     };
 
-    function resetCanvas() {
+    SocketService.on("new-drawing", (data) => {
+      p.stroke(0);
+      p.strokeWeight(2);
+      p.fill(0);
+      p.line(data.x, data.y, data.xx, data.yy);
+      //p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+    });
+
+    SocketService.on("clear", () => {
       p.clear();
       p.createCanvas(500, 400);
       p.background(255);
+    });
+
+    //SocketService.emit("clear-canvas");
+
+    function resetCanvas() {
+      SocketService.emit("clear-canvas");
     }
   };
 
