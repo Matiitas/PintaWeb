@@ -63,42 +63,69 @@ io.on("connection", (socket) => {
 
     socket.username = data.username;
     socket.owner = true;
+    socket.roomId = roomId;
+    socket.join(roomId);
+    //TODO: persist room name with owner
 
     addUser(socket.id, roomId.toString(), data.username);
     addRoomName(roomId.toString(), data.room);
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
     );
-    response({ roomId: roomId });
+
+    const me = {
+      userId: socket.id,
+      username: data.username,
+      owner: true,
+      points: 0,
+    };
+
+    response({
+      user: me,
+      room: {
+        roomId: roomId,
+        name: data.room,
+        users: [me],
+      },
+    });
   });
 
   socket.on("join-room", (data, response) => {
     socket.join(data.roomId);
     socket.roomId = data.roomId;
+    socket.username = data.username;
+
     console.log(
       "El usuario:",
       socket.username,
       "se unio a la room:",
       data.roomId
     );
+
+    addUser(socket.id, socket.roomId.toString(), data.username);
     usersInRoom = findUsers(data.roomId.toString());
     roomName = findRoomName(data.roomId.toString());
-    response({
-      owner: socket.owner,
-      players: usersInRoom,
-      username: socket.username,
-      roomName: roomName,
-      userId: socket.id,
-    });
-  });
 
-  socket.on("set-username", (data, response) => {
-    socket.username = data.username;
-    addUser(socket.id, socket.roomId.toString(), data.username);
-    console.log("Usuarios activos:", findUsers(socket.roomId.toString()));
+    const me = {
+      userId: socket.id,
+      username: data.username,
+      owner: false,
+      points: 0,
+    };
+
     io.in(socket.roomId).emit("user-joins", {
       username: socket.username,
       userId: socket.id,
+      owner: false,
+    });
+
+    response({
+      user: me,
+      room: {
+        roomId: data.roomId,
+        name: roomName,
+        users: usersInRoom,
+      },
     });
   });
 

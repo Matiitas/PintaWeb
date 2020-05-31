@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SocketService from "../../services/SocketService";
+import UserService from "../../services/UserService";
+import RoomService from "../../services/RoomService";
 
 class StartComponent extends Component {
   constructor(props) {
@@ -12,10 +14,8 @@ class StartComponent extends Component {
 
   handleSubmit = (event) => {
     const { sala, player } = this.state;
-    SocketService.emit(
-      "create-room",
-      { username: player, room: sala },
-      (response) => this.props.history.push("/room/" + response.roomId)
+    RoomService.createRoom({ player, sala }, (response) =>
+      this.props.history.push("/room/" + response.room.roomId)
     );
     event.preventDefault();
   };

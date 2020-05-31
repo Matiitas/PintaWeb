@@ -4,48 +4,37 @@ import Ranking from "./Ranking";
 import BlackBoard from "./BlackBoard";
 import Chat from "./Chat";
 import Header from "./Header";
+import UserService from "../../services/UserService";
+import RoomService from "../../services/RoomService";
 
 class PintarrajearComponent extends Component {
   constructor(props) {
     super(props);
 
+    const room = RoomService.getRoom();
+
     this.state = {
-      loading: true,
-      isOwner: false,
-      showForm: false,
+      showForm: !UserService.getIsRegistered(),
+      loading: false,
       name: "",
-      roomName: "",
-      players: [],
+      roomName: room ? room.name : "",
+      players: room ? room.users : [],
     };
 
     this.addPlayer = this.addPlayer.bind(this);
   }
 
   componentDidMount() {
-    let { roomId } = this.props.match.params;
-
-    SocketService.emit("join-room", { roomId: roomId }, (response) => {
-      if (response.owner) {
-        this.setState({ isOwner: true });
-        this.addPlayer(response);
-      } else {
-        console.log("players del response:", response.players);
-        this.setState({
-          showForm: true,
-          players: response.players,
-        });
-      }
-      this.setState({
-        roomName: response.roomName,
-        loading: false,
-      });
-      console.log("El nombre de la sala es:", this.state.roomName);
-    });
-
-    SocketService.on("user-joins", this.addPlayer);
+    if (UserService.getIsRegistered())
+      SocketService.on("user-joins", this.addPlayer);
   }
 
   addPlayer(data) {
+    RoomService.addPlayer({
+      key: data.userId,
+      username: data.username,
+      points: 0,
+    });
     console.log("En el add player", data.username, "con key:", data.userId);
     let arr = this.state.players.slice();
     arr.push({ key: data.userId, username: data.username, points: 0 });
@@ -58,9 +47,17 @@ class PintarrajearComponent extends Component {
   };
 
   handleSubmitForm = (event) => {
-    console.log("Este es el usuario que se va a agregar:", this.state.name);
-    SocketService.emit("set-username", { username: this.state.name });
-    this.setState({ showForm: false });
+    let { roomId } = this.props.match.params;
+    this.setState({ loading: true });
+    RoomService.joinRoom({ roomId, name: this.state.name }, (response) => {
+      this.setState({
+        roomName: response.room.name,
+        players: response.room.users,
+        showForm: false,
+        loading: false,
+      });
+      SocketService.on("user-joins", this.addPlayer);
+    });
     event.preventDefault();
   };
 
@@ -102,13 +99,7 @@ class PintarrajearComponent extends Component {
         className="container-fluid"
         style={{ background: "#433873", padding: 50 }}
       >
-        {this.state.loading ? (
-          <div>Cargando...</div>
-        ) : this.state.showForm ? (
-          this.renderForm()
-        ) : (
-          this.renderGame()
-        )}
+        {this.state.showForm ? this.renderForm() : this.renderGame()}
       </div>
     );
   }
