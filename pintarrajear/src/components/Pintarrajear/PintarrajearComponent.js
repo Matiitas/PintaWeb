@@ -29,15 +29,11 @@ class PintarrajearComponent extends Component {
       SocketService.on("user-joins", this.addPlayer);
   }
 
-  addPlayer(data) {
-    RoomService.addPlayer({
-      key: data.userId,
-      username: data.username,
-      points: 0,
-    });
-    console.log("En el add player", data.username, "con key:", data.userId);
+  addPlayer(user) {
+    RoomService.addPlayer(user);
+    console.log("En el add player", user.username, "con key:", user._id);
     let arr = this.state.players.slice();
-    arr.push({ key: data.userId, username: data.username, points: 0 });
+    arr.push(user);
     this.setState({ players: arr });
     console.log("players actuales:", this.state.players);
   }

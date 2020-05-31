@@ -1,16 +1,18 @@
+import { User } from "../models/User";
+
 class UserService {
   isRegistered = false;
-  user = null;
+  user: User | null = null;
 
   getIsRegistered() {
     return this.isRegistered;
   }
 
-  setIsRegistered(isRegistered) {
+  setIsRegistered(isRegistered: boolean) {
     this.isRegistered = isRegistered;
   }
 
-  setUser(user) {
+  setUser(user: User) {
     this.user = user;
   }
 

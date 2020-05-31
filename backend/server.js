@@ -8,17 +8,7 @@ const cors = require("cors");
 //nos ayuda a conectarnos con la base de datos
 const mongoose = require("mongoose");
 const wordsRouter = require("./routes/words");
-
-const {
-  addUser,
-  findUsers,
-  addRoomName,
-  findRoomName,
-} = require("./usersService");
-
-//para guardar los usuarios con sus respectivas salas
-//{ roomId: [username: string, points: int]  }
-//const rooms = new Map();
+const Models = require("./models/models");
 
 /** Env configuration */
 //configura para que tengamos variables de ambito y dotenv file
@@ -67,26 +57,28 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     //TODO: persist room name with owner
 
-    addUser(socket.id, roomId.toString(), data.username);
-    addRoomName(roomId.toString(), data.room);
+    const me = {
+      username: data.username,
+      owner: true,
+      token: socket.id,
+    };
+    const room = new Models.Room({
+      uuid: roomId,
+      name: data.room,
+      users: [me],
+    });
+
     console.log(
       `User ${data.username} created room ${data.room} with uuid ${roomId}`
     );
 
-    const me = {
-      userId: socket.id,
-      username: data.username,
-      owner: true,
-      points: 0,
-    };
-
-    response({
-      user: me,
-      room: {
-        roomId: roomId,
-        name: data.room,
-        users: [me],
-      },
+    room.save(function (err, room) {
+      //TODO: add feedback for user
+      if (err) return console.error(err);
+      response({
+        user: me,
+        room: room,
+      });
     });
   });
 
@@ -94,6 +86,7 @@ io.on("connection", (socket) => {
     socket.join(data.roomId);
     socket.roomId = data.roomId;
     socket.username = data.username;
+    socket.owner = false;
 
     console.log(
       "El usuario:",
@@ -102,30 +95,26 @@ io.on("connection", (socket) => {
       data.roomId
     );
 
-    addUser(socket.id, socket.roomId.toString(), data.username);
-    usersInRoom = findUsers(data.roomId.toString());
-    roomName = findRoomName(data.roomId.toString());
-
     const me = {
-      userId: socket.id,
       username: data.username,
       owner: false,
-      points: 0,
+      token: socket.id,
     };
 
-    io.in(socket.roomId).emit("user-joins", {
-      username: socket.username,
-      userId: socket.id,
-      owner: false,
-    });
-
-    response({
-      user: me,
-      room: {
-        roomId: data.roomId,
-        name: roomName,
-        users: usersInRoom,
-      },
+    Models.Room.findOne({ uuid: data.roomId }, (err, room) => {
+      room.users.push(me);
+      room.save(function (err, room) {
+        //TODO: add feedback for user
+        if (err) return console.error(err);
+        io.in(socket.roomId).emit(
+          "user-joins",
+          room.users.find((user) => user.token == socket.id)
+        );
+        response({
+          user: room.users.find((user) => user.token == socket.id),
+          room: room,
+        });
+      });
     });
   });
 
