@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import RoomService from "../../services/RoomService";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../../assets/styles/startComponent.css";
 
 class StartComponent extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class StartComponent extends Component {
   }
 
   handleSubmit = (event) => {
-    console.log("se apreto crear sala");
+    console.log("se apreto crear sala", this.state.sala);
     const { sala, player } = this.state;
     RoomService.createRoom({ player, sala }, (response) =>
       this.props.history.push("/room/" + response.room.uuid)
@@ -31,92 +32,51 @@ class StartComponent extends Component {
   render() {
     return (
       <div
-        className=""
+        className="global-div"
         style={{
           height: window.innerHeight,
-          backgroundColor: "#b92b27",
-          background: "linear-gradient(to right, #b92b27, #1565c0)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }}
       >
-        <div
-          className="w-25 p-5"
-          style={{
-            fontFamily: "Poppins-Regular, sans-serif",
-            textAlign: "center",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            border: "1px solid",
-            boxShadow: "4px 4px 4px 2px",
-          }}
-        >
+        <div className="box-outer w-25 p-5">
           <div>
-            <h3 style={{ fontWeight: "bold" }}>Pinta Web</h3>
+            <h3 className="pb-4 box-inner-title">Pinta Web</h3>
           </div>
-          <div style={{ justifyContent: "center", alignItems: "center" }}>
+          <div className="box-form">
             <form onSubmit={this.handleSubmit}>
-              <div
-                className="form-group row pt-4"
-                style={{
-                  position: "relative",
-                  borderBottom: "2px solid #adadad",
-                }}
-              >
+              <div className="form-group row input-box-line">
                 <input
-                  style={{
-                    border: "1px solid #FFFFFF",
-                  }}
-                  className="form-control"
+                  className="input100"
                   type="text"
-                  placeholder="Nombre de la sala"
+                  required
                   onChange={this.handleChangeSala}
                 />
+                <span
+                  className="focus-input100"
+                  data-placeholder="Nombre de la sala"
+                ></span>
               </div>
 
-              <div
-                className="form-group row"
-                style={{
-                  position: "relative",
-                  borderBottom: "2px solid #adadad",
-                }}
-              >
+              <div className="form-group row input-box-line">
                 <input
-                  style={{ border: "1px solid #FFFFFF" }}
-                  className="form-control"
+                  className="input100"
                   type="text"
-                  placeholder="Nombre del jugador"
+                  required
                   onChange={this.handleChangePlayer}
                 />
+                <span
+                  className="focus-input100"
+                  data-placeholder="Nombre del jugador"
+                ></span>
               </div>
-              <div
-                style={{
-                  marginTop: "35px",
-                  display: "block",
-                  position: "relative",
-                  overflow: "hidden",
-                  borderRadius: "25px",
-                }}
-              >
-                <input
-                  className="btn btn-dark"
-                  type=""
-                  style={{
-                    border: "1px solid",
-                    backgroundColor: "#b92b27",
-                    background: "linear-gradient(to right, #b92b27, #1565c0)",
-                    fontFamily: "Poppins-Medium",
-                    fontSize: "20px",
-                    lineHeight: 1.2,
-                    width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
-                  type="submit"
-                  value="Crear Sala"
-                />
+              <div className="container-login100-form-btn">
+                <div className="wrap-login100-form-btn">
+                  <div className="login100-form-bgbtn" />
+                  <input
+                    className="login100-form-btn"
+                    type="submit"
+                    value="Crear Sala"
+                  />
+                </div>
               </div>
             </form>
           </div>
