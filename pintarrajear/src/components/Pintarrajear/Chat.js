@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SocketService from "../../services/SocketService";
+import "../../assets/styles/pintarrajearComponent.css";
 
 class Chat extends Component {
   constructor(props) {
@@ -82,18 +83,22 @@ class Chat extends Component {
 
   render() {
     return (
-      <div
-        className="col-12 col-lg-4 d-flex"
-        style={{ justifyContent: "center" }}
-      >
-        <div className="card">
-          <div className="card-header">
-            <h4 style={{ textAlign: "center" }}> Chat </h4>
+      <div style={{ height: "100%" }}>
+        <div className="card" style={{ height: "100%" }}>
+          <div
+            className="card-header"
+            style={{
+              backgroundColor: "pink",
+            }}
+          >
+            <h4 style={{ textAlign: "center", color: "black" }}> Chat </h4>
           </div>
           <div
             id="chat"
             className="card-body"
-            style={{ height: 250, backgroundColor: "#232323" }}
+            style={{
+              backgroundColor: "#232323",
+            }}
           >
             {this.state.chat.map(this.renderChatMsg)}
           </div>

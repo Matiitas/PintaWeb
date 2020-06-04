@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import p5 from "p5";
 import SocketService from "../../services/SocketService";
+import "../../assets/styles/pintarrajearComponent.css";
 
 class BlackBoard extends Component {
   constructor(props) {
@@ -12,25 +13,15 @@ class BlackBoard extends Component {
 
   sketch = (p) => {
     p.setup = () => {
-      var button = p.createButton("Borrar");
-      button.position(0, 0);
-      button.style("background-color", "brown");
-      button.style("color", "white");
-      button.mousePressed(resetCanvas);
+      var img = p.createImg(require("../../assets/img/eraser.svg"), "Eraser");
+      img.position(0, 0);
+      img.style("cursor", "pointer");
+      img.mousePressed(resetCanvas);
       p.createCanvas(500, 400);
       p.background(255);
     };
 
-    p.draw = () => {
-      // if (p.mouseIsPressed) {
-      //   if (p.mouseButton === p.LEFT) {
-      //     p.stroke(0);
-      //     p.strokeWeight(2);
-      //     p.fill(0);
-      //     p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
-      //   }
-      // }
-    };
+    p.draw = () => {};
 
     p.mouseDragged = () => {
       if (p.mouseButton === p.LEFT) {
@@ -74,13 +65,7 @@ class BlackBoard extends Component {
 
   render() {
     return (
-      <div
-        className="col-12 col-lg-6 d-flex"
-        style={{
-          justifyContent: "center",
-          border: "5px solid",
-        }}
-      >
+      <div>
         <div ref={this.createBlackBoard}></div>
       </div>
     );

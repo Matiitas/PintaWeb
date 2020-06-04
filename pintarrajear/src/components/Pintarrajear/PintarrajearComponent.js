@@ -6,6 +6,7 @@ import Chat from "./Chat";
 import Header from "./Header";
 import UserService from "../../services/UserService";
 import RoomService from "../../services/RoomService";
+import "../../assets/styles/pintarrajearComponent.css";
 
 class PintarrajearComponent extends Component {
   constructor(props) {
@@ -17,8 +18,8 @@ class PintarrajearComponent extends Component {
       showForm: !UserService.getIsRegistered(),
       loading: false,
       name: "",
-      roomName: room ? room.name : "",
-      players: room ? room.users : [],
+      roomName: room ? room.name : "Algun nombre",
+      players: room ? room.users : [{ username: "Matias", points: 0 }],
     };
 
     this.addPlayer = this.addPlayer.bind(this);
@@ -59,15 +60,59 @@ class PintarrajearComponent extends Component {
 
   renderGame = () => {
     return (
-      <div style={{ textAlign: "center" }}>
-        <Header roomName={this.state.roomName} />
-        <div
-          className="row"
-          style={{ justifyContent: "center", border: "3px solid" }}
-        >
-          <Ranking players={this.state.players} />
-          <BlackBoard />
-          <Chat username={this.state.name} />
+      <div
+        className="global-div"
+        style={{
+          height: window.innerHeight,
+        }}
+      >
+        <div class="box">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <div className="container-fluid">
+            <div className="col-md-auto">
+              <div
+                className="row"
+                style={{
+                  justifyContent: "center",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <Header roomName={this.state.roomName} />
+              </div>
+
+              <div
+                className="row"
+                style={{
+                  textAlign: "center",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <div
+                  className="col-md-2"
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <Ranking players={this.state.players} />
+                </div>
+                <div
+                  className="col-md-6"
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <BlackBoard />
+                </div>
+                <div
+                  className="col-md-4"
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <Chat username={this.state.name} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -90,15 +135,8 @@ class PintarrajearComponent extends Component {
   };
 
   render() {
-    return (
-      <div
-        className="container-fluid"
-        style={{ background: "#433873", padding: 50 }}
-      >
-        {this.state.showForm ? this.renderForm() : this.renderGame()}
-      </div>
-    );
+    return <div>{this.renderGame()}</div>;
   }
 }
-
+//{this.state.showForm ? this.renderForm() : this.renderGame()}
 export default PintarrajearComponent;

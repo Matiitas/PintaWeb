@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "../../assets/styles/pintarrajearComponent.css";
 
 class Ranking extends Component {
   constructor(props) {
@@ -8,13 +9,8 @@ class Ranking extends Component {
 
   render() {
     return (
-      <div
-        className="col-12 col-lg-2 d-block"
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <h3> Posiciones </h3>
+      <div>
+        <h4> Posiciones </h4>
         {this.props.players
           .sort((a, b) => (a.points < b.points ? 1 : -1))
           .map(this.renderPositions)}

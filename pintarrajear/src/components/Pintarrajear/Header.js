@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "../../assets/styles/pintarrajearComponent.css";
 
 //<></div>
 
@@ -8,7 +9,11 @@ class Header extends Component {
     this.state = {};
   }
   render() {
-    return <h3> {this.props.roomName} </h3>;
+    return (
+      <div>
+        <h3> {this.props.roomName} </h3>
+      </div>
+    );
   }
 }
 
