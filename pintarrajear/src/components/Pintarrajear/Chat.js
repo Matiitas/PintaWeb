@@ -83,7 +83,7 @@ class Chat extends Component {
 
   render() {
     return (
-      <div style={{ height: "100%" }}>
+      <div className="chat-component boxbox">
         <div className="card" style={{ height: "100%" }}>
           <div
             className="card-header"

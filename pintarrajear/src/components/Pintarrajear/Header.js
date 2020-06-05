@@ -10,8 +10,8 @@ class Header extends Component {
   }
   render() {
     return (
-      <div>
-        <h3> {this.props.roomName} </h3>
+      <div className="header-component boxbox">
+        <h4>{this.props.roomName}</h4>
       </div>
     );
   }

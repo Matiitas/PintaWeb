@@ -1,17 +1,23 @@
 .global-div {
-  background-color: #b92b27;
-  background: linear-gradient(to right, #b92b27, #1565c0);
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .box-outer {
+  background-color: #b92b27;
+  background: linear-gradient(
+    to right,
+    rgb(185, 44, 39, 0.7),
+    rgb(21, 101, 192, 0.7)
+  );
   font-family: Poppins-Regular, sans-serif;
   text-align: center;
-  background-color: white;
+  background-color: none;
   border-radius: 10px;
-  border: 1px solid;
+  border: 3px solid;
   box-shadow: 4px 4px 4px 2px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -36,7 +42,7 @@
 
 .input100 {
   font-size: 15px;
-  color: #555555;
+  color: #ffffff;
   line-height: 1.2;
   border: none;
   display: block;

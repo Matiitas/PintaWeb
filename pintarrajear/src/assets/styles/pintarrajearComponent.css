@@ -1,61 +1,19 @@
-.global-div {
-  background-color: #b92b27;
-  background: linear-gradient(
-    to right,
-    rgb(185, 44, 39, 0.9),
-    rgb(21, 101, 192, 0.9)
-  );
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-image: url(../img/background-img4.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#root {
+  height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.box {
-  position: absolute;
-  box-sizing: border-box;
-  height: 80%;
-  width: 90%;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgb(23, 32, 90);
-  border: 2px solid #2a3cad;
-}
-
-.box:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.1);
-  transition: 0.5s;
-  pointer-events: none;
-}
-
-.box span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  box-sizing: border-box;
-}
-
-.box span:nth-child(1) {
-  transform: rotate(0deg);
-}
-
-.box span:nth-child(3) {
-  transform: rotate(180deg);
-}
-
-.box span:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: #029716;
-  animation: animate 4s linear infinite;
 }
 
 @keyframes animate {
@@ -76,4 +34,120 @@
     transform: scaleX(0);
     transform-origin: right;
   }
+}
+
+.container {
+  font-family: Poppins-Regular, sans-serif;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 2fr;
+  gap: 0.5rem;
+  grid-template-areas:
+    "header header header header header header header header header header header header"
+    "ranking ranking board board board board board board chat chat chat chat";
+}
+
+.header-component {
+  grid-area: header;
+  background-color: #b92b27;
+  background: linear-gradient(
+    to right,
+    rgb(185, 44, 39, 0.5),
+    rgb(21, 101, 192, 0.5)
+  );
+}
+
+.ranking-component {
+  grid-area: ranking;
+  background-color: #b92b27;
+  background: linear-gradient(
+    to right,
+    rgb(185, 44, 39, 0.5),
+    rgb(21, 101, 192, 0.5)
+  );
+}
+
+.board-component {
+  grid-area: board;
+  background-color: #b92b27;
+  background: linear-gradient(
+    to right,
+    rgb(185, 44, 39, 0.5),
+    rgb(21, 101, 192, 0.5)
+  );
+}
+
+.chat-component {
+  grid-area: chat;
+  background-color: #b92b27;
+  background: linear-gradient(
+    to right,
+    rgb(185, 44, 39, 0.5),
+    rgb(21, 101, 192, 0.5)
+  );
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    padding-top: 25vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.2fr 1.8fr 1.2fr;
+    grid-template-areas:
+      "header header"
+      "board board"
+      "ranking chat";
+  }
+}
+
+.boxbox {
+  padding: 10px 20px;
+  border: none;
+  position: relative;
+}
+.boxbox:after,
+.boxbox:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 3px solid rgb(0, 0, 0);
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+}
+.boxbox:after {
+  -webkit-transform: translate(0px, 0px);
+  transform: translate(0px, 0px);
+  -moz-transform: translate(0px, 0px);
+  -ms-transform: translate(0px, 0px);
+  -o-transform: translate(0px, 0px);
+}
+.boxbox:before {
+  -webkit-transform: translate(0px, 0px);
+  transform: translate(0px, 0px);
+  -moz-transform: translate(0px, 0px);
+  -ms-transform: translate(0px, 0px);
+  -o-transform: translate(0px, 0px);
+}
+.boxbox:hover:after {
+  -webkit-transform: translate(3px, 3px);
+  transform: translate(3px, 3px);
+  -moz-transform: translate(3px, 3px);
+  -ms-transform: translate(3px, 3px);
+  -o-transform: translate(3px, 3px);
+  border: 2px solid rgb(2, 5, 148);
+}
+.boxbox:hover:before {
+  -webkit-transform: translate(-3px, -3px);
+  transform: translate(-3px, -3px);
+  -moz-transform: translate(-3px, -3px);
+  -ms-transform: translate(-3px, -3px);
+  -o-transform: translate(-3px, -3px);
+  border: 2px solid rgb(131, 4, 4);
 }

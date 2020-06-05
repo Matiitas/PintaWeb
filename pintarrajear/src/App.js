@@ -7,10 +7,8 @@ import PintarrajearComponent from "./components/Pintarrajear/PintarrajearCompone
 function App() {
   return (
     <Router>
-      <div>
-        <Route path="/" exact component={StartComponent} />
-        <Route path="/room/:roomId" exact component={PintarrajearComponent} />
-      </div>
+      <Route path="/" exact component={StartComponent} />
+      <Route path="/room/:roomId" exact component={PintarrajearComponent} />
     </Router>
   );
 } // component={unComponente} que será el que se mostrará cuando se vaya a la url.

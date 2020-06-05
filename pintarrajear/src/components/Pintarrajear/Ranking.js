@@ -9,8 +9,10 @@ class Ranking extends Component {
 
   render() {
     return (
-      <div>
-        <h4> Posiciones </h4>
+      <div className="ranking-component boxbox">
+        <div>
+          <h4> Posiciones </h4>
+        </div>
         {this.props.players
           .sort((a, b) => (a.points < b.points ? 1 : -1))
           .map(this.renderPositions)}

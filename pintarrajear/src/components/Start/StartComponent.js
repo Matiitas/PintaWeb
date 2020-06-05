@@ -31,13 +31,8 @@ class StartComponent extends Component {
 
   render() {
     return (
-      <div
-        className="global-div"
-        style={{
-          height: window.innerHeight,
-        }}
-      >
-        <div className="box-outer w-25 p-5">
+      <div className="global-div">
+        <div className="box-outer p-5">
           <div>
             <h3 className="pb-4 box-inner-title">Pinta Web</h3>
           </div>

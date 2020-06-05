@@ -60,60 +60,11 @@ class PintarrajearComponent extends Component {
 
   renderGame = () => {
     return (
-      <div
-        className="global-div"
-        style={{
-          height: window.innerHeight,
-        }}
-      >
-        <div class="box">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <div className="container-fluid">
-            <div className="col-md-auto">
-              <div
-                className="row"
-                style={{
-                  justifyContent: "center",
-                  backgroundColor: "transparent",
-                }}
-              >
-                <Header roomName={this.state.roomName} />
-              </div>
-
-              <div
-                className="row"
-                style={{
-                  textAlign: "center",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <div
-                  className="col-md-2"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  <Ranking players={this.state.players} />
-                </div>
-                <div
-                  className="col-md-6"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  <BlackBoard />
-                </div>
-                <div
-                  className="col-md-4"
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  <Chat username={this.state.name} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="container">
+        <Header roomName={this.state.roomName} />
+        <Ranking players={this.state.players} />
+        <BlackBoard />
+        <Chat username={this.state.name} />
       </div>
     );
   };
