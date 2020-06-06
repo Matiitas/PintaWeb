@@ -4,8 +4,8 @@ html {
 
 body {
   height: 100%;
-  background-image: url(../img/background-img4.jpg);
-  background-repeat: no-repeat;
+  background-image: url(../img/background-img5.jpg);
+  background-repeat: round;
   background-size: cover;
 }
 
@@ -14,26 +14,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-@keyframes animate {
-  0% {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  50% {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-  50.1% {
-    transform: scaleX(1);
-    transform-origin: right;
-  }
-
-  100% {
-    transform: scaleX(0);
-    transform-origin: right;
-  }
 }
 
 .container {
@@ -52,47 +32,50 @@ body {
 
 .header-component {
   grid-area: header;
-  background-color: #b92b27;
-  background: linear-gradient(
-    to right,
-    rgb(185, 44, 39, 0.5),
-    rgb(21, 101, 192, 0.5)
-  );
+  background-color: rgb(243, 230, 230);
+
+  /*background-color: #b92b27;
+  background: linear-gradient(    to right,    rgb(185, 44, 39, 0.5),    rgb(21, 101, 192, 0.5)  );
+  */
 }
 
 .ranking-component {
   grid-area: ranking;
-  background-color: #b92b27;
+  background-color: rgb(243, 230, 230);
+
+  /* background-color: #b92b27;
   background: linear-gradient(
     to right,
     rgb(185, 44, 39, 0.5),
     rgb(21, 101, 192, 0.5)
-  );
+  ); */
 }
 
 .board-component {
   grid-area: board;
-  background-color: #b92b27;
+  background-color: rgb(243, 230, 230);
+
+  /* background-color: #b92b27;
   background: linear-gradient(
     to right,
     rgb(185, 44, 39, 0.5),
     rgb(21, 101, 192, 0.5)
-  );
+  ); */
 }
 
 .chat-component {
   grid-area: chat;
-  background-color: #b92b27;
-  background: linear-gradient(
-    to right,
-    rgb(185, 44, 39, 0.5),
-    rgb(21, 101, 192, 0.5)
-  );
+  background-color: rgb(243, 230, 230);
+
+  /*background-color: #b92b27;
+  background: linear-gradient(    to right,    rgb(185, 44, 39, 0.5),    rgb(21, 101, 192, 0.5)  );
+  */
 }
 
 @media only screen and (max-width: 768px) {
   .container {
-    padding-top: 25vh;
+    padding-top: 42vh;
+    padding-bottom: 4vh;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 0.2fr 1.8fr 1.2fr;
     grid-template-areas:
@@ -141,7 +124,7 @@ body {
   -moz-transform: translate(3px, 3px);
   -ms-transform: translate(3px, 3px);
   -o-transform: translate(3px, 3px);
-  border: 2px solid rgb(2, 5, 148);
+  border: 2px solid rgb(11, 204, 188);
 }
 .boxbox:hover:before {
   -webkit-transform: translate(-3px, -3px);
@@ -149,5 +132,5 @@ body {
   -moz-transform: translate(-3px, -3px);
   -ms-transform: translate(-3px, -3px);
   -o-transform: translate(-3px, -3px);
-  border: 2px solid rgb(131, 4, 4);
+  border: 2px solid rgb(28, 207, 4);
 }

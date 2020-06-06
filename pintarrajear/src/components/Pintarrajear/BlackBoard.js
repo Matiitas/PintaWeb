@@ -15,6 +15,7 @@ class BlackBoard extends Component {
     p.setup = () => {
       var img = p.createImg(require("../../assets/img/eraser.svg"), "Eraser");
       img.style("cursor", "pointer");
+      img.style("z-index", "1");
       img.position(0, 0, "sticky");
       img.mousePressed(resetCanvas);
       p.createCanvas(450, 380);
@@ -48,7 +49,7 @@ class BlackBoard extends Component {
 
     SocketService.on("clear", () => {
       p.clear();
-      p.createCanvas(500, 400);
+      p.createCanvas(450, 380);
       p.background(255);
     });
 
