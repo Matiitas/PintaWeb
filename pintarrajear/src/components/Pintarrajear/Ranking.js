@@ -20,9 +20,9 @@ class Ranking extends Component {
     );
   }
 
-  renderPositions(player) {
+  renderPositions(player, index) {
     return (
-      <h5>
+      <h5 key={index}>
         {" "}
         {player.username} : {player.points}{" "}
       </h5>
