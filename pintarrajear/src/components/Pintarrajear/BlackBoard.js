@@ -13,11 +13,6 @@ class BlackBoard extends Component {
 
   sketch = (p) => {
     p.setup = () => {
-      var img = p.createImg(require("../../assets/img/eraser.svg"), "Eraser");
-      img.style("cursor", "pointer");
-      img.style("z-index", "1");
-      img.position(0, 0, "sticky");
-      img.mousePressed(resetCanvas);
       p.createCanvas(450, 380);
       p.background(255);
     };
@@ -70,10 +65,16 @@ class BlackBoard extends Component {
         <div style={{ textAlign: "center" }}>
           <h4>Contador y Palabra</h4>
         </div>
-        <div
-          style={{ border: "3px solid black" }}
-          ref={this.createBlackBoard}
-        ></div>
+        <div style={{ display: "flex" }}>
+          <div>
+            <img src={require("../../assets/img/eraser.svg")} />
+          </div>
+
+          <div
+            style={{ border: "3px solid black", display: "flex" }}
+            ref={this.createBlackBoard}
+          />
+        </div>
       </div>
     );
   }
