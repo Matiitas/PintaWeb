@@ -82,7 +82,7 @@ class BlackBoard extends Component {
         <div style={{ textAlign: "center" }}>
           <h4>Contador y Palabra</h4>
         </div>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", position: "relative", zIndex: "1" }}>
           <div style={{ display: "flex", alignItems: "flex-start", width: 40 }}>
             <div
               id="eraser"
