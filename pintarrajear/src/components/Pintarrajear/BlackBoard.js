@@ -16,6 +16,9 @@ class BlackBoard extends Component {
   }
 
   sketch = (p) => {
+    let stroke = "";
+    let strokeWeight = 0;
+
     p.setup = () => {
       p.createCanvas(450, 380);
       p.background(255);
@@ -25,22 +28,35 @@ class BlackBoard extends Component {
 
     p.mouseDragged = () => {
       if (p.mouseButton === p.LEFT) {
+        if (!this.state.showFloatEraser) {
+          p.stroke("black");
+          p.strokeWeight(2);
+          p.fill(0);
+          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+          stroke = "black";
+          strokeWeight = 2;
+        } else {
+          p.stroke("white");
+          p.strokeWeight(15);
+          p.fill(0);
+          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+          stroke = "white";
+          strokeWeight = 15;
+        }
         SocketService.emit("drawing", {
           x: p.mouseX,
           y: p.mouseY,
           xx: p.pmouseX,
           yy: p.pmouseY,
+          stroke: stroke,
+          strokeWeight: strokeWeight,
         });
-        p.stroke(0);
-        p.strokeWeight(2);
-        p.fill(0);
-        p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
       }
     };
 
     SocketService.on("new-drawing", (data) => {
-      p.stroke(0);
-      p.strokeWeight(2);
+      p.stroke(data.stroke);
+      p.strokeWeight(data.strokeWeight);
       p.fill(0);
       p.line(data.x, data.y, data.xx, data.yy);
       //p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
@@ -64,7 +80,7 @@ class BlackBoard extends Component {
   }
 
   setCursorPosition(e) {
-    this.setState({ cursorX: e.layerX, cursorY: e.layerY });
+    this.setState({ cursorX: e.layerX - 15, cursorY: e.layerY - 15 });
   }
 
   handleOnClickEraser() {
@@ -78,46 +94,51 @@ class BlackBoard extends Component {
       <div
         className="board-component boxbox"
         onMouseMove={(e) => this.setCursorPosition(e.nativeEvent)}
+        style={{ cursor: this.state.showFloatEraser ? "none" : "auto" }}
       >
-        <div style={{ textAlign: "center" }}>
-          <h4>Contador y Palabra</h4>
-        </div>
-        <div style={{ display: "flex", position: "relative", zIndex: "1" }}>
-          <div style={{ display: "flex", alignItems: "flex-start", width: 40 }}>
-            <div
-              id="eraser"
-              onClick={this.handleOnClickEraser.bind(this)}
-              style={{ opacity: this.state.showFloatEraser ? 0 : 1 }}
-            >
-              <img
-                src={require("../../assets/img/eraser.svg")}
-                style={{ transform: "rotate(90deg)" }}
-              />
-            </div>
-          </div>
-
+        <div
+          style={{
+            backgroundColor: "brown",
+            position: "relative",
+            zIndex: "1",
+            cursor: "auto",
+          }}
+        >
           <div
-            style={{ border: "3px solid black", display: "flex" }}
-            ref={this.createBlackBoard}
+            id="eraser"
+            onClick={this.handleOnClickEraser.bind(this)}
+            style={
+              {
+                //opacity: this.state.showFloatEraser ? 0 : 1,
+              }
+            }
           >
-            <div
-              id="float-eraser"
-              style={{
-                backgroundColor: "red",
-                position: "absolute",
-                left: this.state.cursorX,
-                top: this.state.cursorY,
-                display: this.state.showFloatEraser ? "block" : "none",
-              }}
-            >
-              <img
-                src={require("../../assets/img/eraser.svg")}
-                style={{ transform: "rotate(90deg)" }}
-              />
-            </div>
+            <img
+              src={require("../../assets/img/eraser.svg")}
+              style={{ transform: "rotate(90deg)", cursor: "pointer" }}
+            />
           </div>
+        </div>
 
-          <div style={{ width: 40 }}></div>
+        <div ref={this.createBlackBoard}>
+          <div
+            id="float-eraser"
+            style={{
+              backgroundColor: "red",
+              position: "absolute",
+              left: this.state.cursorX,
+              top: this.state.cursorY,
+              background: "none",
+              display: this.state.showFloatEraser ? "block" : "none",
+            }}
+          >
+            <img
+              src={require("../../assets/img/eraser.svg")}
+              style={{
+                transform: "rotate(90deg)",
+              }}
+            />
+          </div>
         </div>
       </div>
     );

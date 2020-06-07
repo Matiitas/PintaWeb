@@ -23,10 +23,11 @@ body {
   text-align: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 0.2fr 2fr;
+  grid-template-rows: 0.2fr 0.2fr 2fr;
   gap: 0.5rem;
   grid-template-areas:
     "header header header header header header header header header header header header"
+    "ranking ranking count count count count count count chat chat chat chat"
     "ranking ranking board board board board board board chat chat chat chat";
 }
 
@@ -72,14 +73,25 @@ body {
   */
 }
 
+.count-component {
+  grid-area: count;
+  background-color: rgb(243, 230, 230);
+}
+
+.palette {
+  grid-area: palette;
+  background-color: rgb(243, 230, 230);
+}
+
 @media only screen and (max-width: 768px) {
   .container {
     padding-top: 42vh;
     padding-bottom: 4vh;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.2fr 1.8fr 1.2fr;
+    grid-template-rows: 0.2fr 0.2fr 1.8fr 1.2fr;
     grid-template-areas:
       "header header"
+      "count count"
       "board board"
       "ranking chat";
   }

@@ -133,6 +133,8 @@ io.on("connection", (socket) => {
       y: data.y,
       xx: data.xx,
       yy: data.yy,
+      stroke: data.stroke,
+      strokeWeight: data.strokeWeight,
     });
   });
 

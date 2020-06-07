@@ -4,6 +4,7 @@ import Ranking from "./Ranking";
 import BlackBoard from "./BlackBoard";
 import Chat from "./Chat";
 import Header from "./Header";
+import CountAndWord from "./CountAndWord";
 import UserService from "../../services/UserService";
 import RoomService from "../../services/RoomService";
 import "../../assets/styles/pintarrajearComponent.css";
@@ -63,6 +64,7 @@ class PintarrajearComponent extends Component {
       <div className="container">
         <Header roomName={this.state.roomName} />
         <Ranking players={this.state.players} />
+        <CountAndWord />
         <BlackBoard />
         <Chat username={this.state.name} />
       </div>
@@ -86,7 +88,9 @@ class PintarrajearComponent extends Component {
   };
 
   render() {
-    return <div>{this.renderGame()}</div>;
+    return (
+      <div>{this.state.showForm ? this.renderForm() : this.renderGame()}</div>
+    );
   }
 }
 //{this.state.showForm ? this.renderForm() : this.renderGame()}
