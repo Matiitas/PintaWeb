@@ -79,8 +79,10 @@ body {
 }
 
 .palette {
-  grid-area: palette;
-  background-color: rgb(243, 230, 230);
+  background-color: brown;
+  position: relative;
+  z-index: 1;
+  cursor: auto;
 }
 
 @media only screen and (max-width: 768px) {

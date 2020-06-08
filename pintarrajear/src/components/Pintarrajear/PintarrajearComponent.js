@@ -88,9 +88,7 @@ class PintarrajearComponent extends Component {
   };
 
   render() {
-    return (
-      <div>{this.state.showForm ? this.renderForm() : this.renderGame()}</div>
-    );
+    return <div>{this.renderGame()}</div>;
   }
 }
 //{this.state.showForm ? this.renderForm() : this.renderGame()}

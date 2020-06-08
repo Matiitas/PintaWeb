@@ -11,7 +11,7 @@ class BlackBoard extends Component {
       cursorY: 0,
       showFloatEraser: false,
     };
-
+    this.eraser = React.createRef();
     this.createBlackBoard = this.createBlackBoard.bind(this);
   }
 
@@ -89,20 +89,29 @@ class BlackBoard extends Component {
     this.setState({ showFloatEraser: true });
   }
 
+  changeEraserOpacityToZero = () => {
+    console.log("0");
+    this.eraser.current.style.opacity = "0";
+  };
+
+  changeEraserOpacityToOne = () => {
+    console.log("1");
+    this.eraser.current.style.opacity = "1";
+  };
+
   render() {
     return (
       <div
         className="board-component boxbox"
         onMouseMove={(e) => this.setCursorPosition(e.nativeEvent)}
+        onMouseEnter={this.changeEraserOpacityToOne}
+        onMouseLeave={this.changeEraserOpacityToZero}
         style={{ cursor: this.state.showFloatEraser ? "none" : "auto" }}
       >
         <div
-          style={{
-            backgroundColor: "brown",
-            position: "relative",
-            zIndex: "1",
-            cursor: "auto",
-          }}
+          className="palette"
+          onMouseEnter={this.changeEraserOpacityToZero}
+          onMouseLeave={this.changeEraserOpacityToOne}
         >
           <div
             id="eraser"
@@ -122,6 +131,7 @@ class BlackBoard extends Component {
 
         <div ref={this.createBlackBoard}>
           <div
+            ref={this.eraser}
             id="float-eraser"
             style={{
               backgroundColor: "red",
